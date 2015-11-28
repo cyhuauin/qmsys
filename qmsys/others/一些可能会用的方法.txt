@@ -1,0 +1,70 @@
+
+	public Long 查询用户id() {
+		String sql = "SELECT uid FROM tbl_user";
+		Long uid = null;
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				uid = rs.getLong("uid");
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCConnection.close(rs);
+			JDBCConnection.close(ps);
+			JDBCConnection.close(conn);
+		}
+		return uid;
+	}
+
+	public List<Long> 获取所有菜单的id() {
+		String sql = "SELECT mid FROM tbl_menuitem";
+		List<Long> list = new ArrayList<Long>();
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				Long mid = rs.getLong("mid");
+				list.add(mid);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCConnection.close(rs);
+			JDBCConnection.close(ps);
+			JDBCConnection.close(conn);
+		}
+		return list;
+	}
+
+	public void 插入权限(Long uid, List<Long> mids) {
+		String sql = "INSERT INTO user_menuitem(uid,mid) VALUES (?,?);";
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement(sql);
+			for (Long mid : mids) {
+				ps.setLong(1, uid);
+				ps.setLong(2, mid);
+				ps.addBatch();
+			}
+			int[] result = ps.executeBatch();
+			for(int i:result){
+				System.out.print(i+" ");
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCConnection.close(rs);
+			JDBCConnection.close(ps);
+			JDBCConnection.close(conn);
+		}
+	}

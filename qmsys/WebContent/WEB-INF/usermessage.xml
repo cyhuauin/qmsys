@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Messages>
+<profession>
+<id>1</id>
+<name>计算机应用</name>
+</profession>
+
+<profession>
+<id>2</id>
+<name>软件工程</name>
+</profession>
+</Messages>
